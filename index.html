@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le menu – faites votre choix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#35594F; --accent-soft:#EAF0EE; --ink:#2B2B2B; --muted:#5F6664;
+    --line:#DCE3E1; --paper:#FFFFFF; --bg:#FAFAF8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Raleway',sans-serif;line-height:1.5}
+  .wrap{max-width:880px;margin:0 auto;padding:56px 24px 80px}
+  header{text-align:center;margin-bottom:40px}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:44px;margin:0 0 6px;color:var(--ink)}
+  .sub{color:var(--muted);margin:0;font-size:16px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:36px 32px;margin-bottom:28px}
+  .label{font-weight:600;font-size:13px;letter-spacing:.3em;color:var(--accent);text-align:center;margin:0 0 22px;text-transform:uppercase}
+  .names{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .chip{font:inherit;font-size:16px;padding:10px 20px;min-height:44px;border:1px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+  .chip:hover{border-color:var(--accent)}
+  .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .chip[aria-pressed="true"] .dot{background:#fff}
+  .hint{text-align:center;color:var(--muted);font-size:14px;margin:14px 0 0}
+  .acts{display:grid;gap:36px}
+  fieldset{border:0;margin:0;padding:0}
+  legend{width:100%;padding:0}
+  .options{display:grid;gap:12px}
+  .opt{display:flex;align-items:center;gap:16px;padding:16px 20px;border:1px solid var(--line);border-radius:6px;cursor:pointer;background:#fff;min-height:56px}
+  .opt:hover{border-color:var(--accent)}
+  .opt input{appearance:none;width:22px;height:22px;flex:0 0 22px;border:1.5px solid #8A9592;border-radius:50%;margin:0;display:grid;place-items:center;cursor:pointer}
+  .opt input:checked{border-color:var(--accent)}
+  .opt input:checked::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--accent)}
+  .opt input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+  .opt span{font-size:17px}
+  .disabled .opt{opacity:.5;pointer-events:none}
+  .note label{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
+  .note textarea{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--line);border-radius:6px;min-height:70px;resize:vertical}
+  .note textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+  .btn{font:inherit;font-weight:600;font-size:16px;padding:12px 28px;min-height:48px;border-radius:999px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer}
+  .btn:hover{background:#22403A}
+  .btn.ghost{background:#fff;color:var(--accent)}
+  .btn.ghost:hover{background:var(--accent-soft)}
+  .btn:disabled,.btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed;pointer-events:none}
+  a.btn{text-decoration:none;display:inline-flex;align-items:center}
+  .status{text-align:center;min-height:24px;margin:16px 0 0;font-size:15px;color:var(--accent)}
+  .status.err{color:#A33A2B}
+  table{width:100%;border-collapse:collapse;font-size:15px}
+  th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  td.name{font-weight:600;white-space:nowrap}
+  td.empty{color:#8A9592;font-style:italic}
+  td .n{display:block;color:var(--muted);font-size:13px;font-style:italic;margin-top:2px}
+  .tablebox{overflow-x:auto}
+  .counts{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:32px}
+  .counts h3{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 10px;font-weight:600}
+  .counts ul{list-style:none;margin:0;padding:0}
+  .counts li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .counts b{color:var(--accent);font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1}
+  .progress{text-align:center;color:var(--muted);font-size:14px;margin:-8px 0 18px}
+  @media (max-width:640px){
+    .wrap{padding:36px 14px 60px} h1{font-size:34px} .card{padding:26px 18px}
+    .counts{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Le menu</h1>
+    <p class="sub">Choisissez votre entrée et votre plat, puis envoyez votre choix par WhatsApp.</p>
+  </header>
+
+  <section class="card" aria-labelledby="who">
+    <p class="label" id="who">Qui êtes-vous ?</p>
+    <div class="names" id="names"></div>
+    <p class="hint" id="whoHint">Touchez votre prénom pour commencer.</p>
+  </section>
+
+  <form class="card disabled" id="form" aria-labelledby="formTitle">
+    <p class="label" id="formTitle" style="position:absolute;left:-9999px">Votre choix</p>
+    <div class="acts">
+      <fieldset>
+        <legend><p class="label">Acte I</p></legend>
+        <div class="options" id="acte1"></div>
+      </fieldset>
+      <fieldset>
+        <legend><p class="label">Acte II</p></legend>
+        <div class="options" id="acte2"></div>
+      </fieldset>
+      <div class="note">
+        <label for="note">Une remarque ? (allergie, cuisson…) – facultatif</label>
+        <textarea id="note" maxlength="300"></textarea>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn" id="whatsapp" href="#" aria-disabled="true">Envoyer par WhatsApp</a>
+      <button type="button" class="btn ghost" id="copy" disabled>Copier mon choix</button>
+    </div>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <p class="hint" id="preview" style="white-space:pre-line"></p>
+  </form>
+</div>
+
+<script>
+// ⚙️ Mettez ici votre numéro WhatsApp au format international, sans + ni espaces
+// (ex. "33612345678"). Laissez vide pour que chacun choisisse le contact ou le groupe.
+const WHATSAPP_NUMBER = "33648049703";
+
+const PEOPLE = ["Blandine","Faustine","Myrtille","Lucile","Sonia","Germain","Nico","Basile"];
+const ACTE1 = [
+  "Ceviche de Dorade Royale – Leche de Tigre – Mangue",
+  "Potimarron cru – Foie gras – Raisin noir – Épices douces",
+  "Cèpes – Brioche – Cancoillotte – Escargot"
+];
+const ACTE2 = [
+  "Filet de Bœuf Wellington VBF – Lard de Colonnata – Moutarde maison – Jus de bœuf – Purée Robuchon",
+  "Risotto – Coquille Saint-Jacques – Truffe d'automne de la Drôme",
+  "Colvert retour de chasse – Sauce « Extra Old » – Blé – Choux",
+  "Filet de Turbot – Châtaigne – Beurre malté – Radis noir"
+];
+
+let current = null;
+const $ = id => document.getElementById(id);
+const el = (tag, attrs={}, text) => { const e=document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text!=null) e.textContent=text; return e; };
+
+function buildOptions(){
+  [["acte1",ACTE1],["acte2",ACTE2]].forEach(([id,list])=>{
+    const box=$(id);
+    list.forEach((dish,i)=>{
+      const lab=el("label",{class:"opt"});
+      const inp=el("input",{type:"radio",name:id,value:String(i)});
+      inp.addEventListener("change",update);
+      lab.append(inp, el("span",{},dish));
+      box.append(lab);
+    });
+  });
+  $("note").addEventListener("input",update);
+}
+
+function renderNames(){
+  const box=$("names"); box.textContent="";
+  PEOPLE.forEach(p=>{
+    const b=el("button",{type:"button",class:"chip","aria-pressed":String(current===p)},p);
+    b.addEventListener("click",()=>{
+      current=p;
+      $("form").classList.remove("disabled");
+      $("whoHint").textContent="Bonjour "+p+" ! Faites votre choix ci-dessous.";
+      renderNames(); update();
+      $("acte1").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+    box.append(b);
+  });
+}
+
+function selected(name){
+  const i=document.querySelector('input[name="'+name+'"]:checked');
+  return i ? (name==="acte1"?ACTE1:ACTE2)[+i.value] : null;
+}
+
+function message(){
+  const note=$("note").value.trim();
+  return "🍽️ Choix de " + current + "\n" +
+         "Acte I : " + selected("acte1") + "\n" +
+         "Acte II : " + selected("acte2") +
+         (note ? "\nRemarque : " + note : "");
+}
+
+function update(){
+  const ok = current && selected("acte1") && selected("acte2");
+  const wa=$("whatsapp");
+  $("copy").disabled = !ok;
+  if (ok){
+    const txt=message();
+    wa.href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(txt);
+    wa.setAttribute("target","_blank"); wa.setAttribute("rel","noopener");
+    wa.removeAttribute("aria-disabled");
+    $("preview").textContent = txt;
+  } else {
+    wa.href="#"; wa.setAttribute("aria-disabled","true");
+    $("preview").textContent = "";
+  }
+  $("status").textContent="";
+}
+
+$("form").addEventListener("submit", e=>e.preventDefault());
+$("copy").addEventListener("click", async ()=>{
+  try { await navigator.clipboard.writeText(message()); $("status").textContent="Copié ! Vous pouvez le coller dans un message."; }
+  catch(_) { $("status").textContent="Impossible de copier automatiquement : recopiez le texte ci-dessous."; }
+});
+
+buildOptions(); renderNames(); update();
+</script>
+</body>
+</html>
